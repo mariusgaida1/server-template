@@ -26,5 +26,14 @@ export default (db: Database) => {
     })
   )
 
+  router.post(
+    '/',
+    jsonRoute(async (req, res) => {
+        const data = req.body
+        await messages.addSceering(data)
+        res.status(200)
+      })
+  )
+
   return router
 }
