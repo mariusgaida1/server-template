@@ -1,3 +1,10 @@
+import type { ColumnType } from 'kysely'
+
+export type Generated<T> =
+  T extends ColumnType<infer S, infer I, infer U>
+    ? ColumnType<S, I | undefined, U>
+    : ColumnType<T, T | undefined, T>
+
 export interface Directors {
   movieId: number
   personId: number
@@ -10,9 +17,9 @@ export interface Movies {
 }
 
 export interface People {
+  birth: number | null
   id: number | null
   name: string
-  birth: number | null
 }
 
 export interface Ratings {
@@ -21,9 +28,23 @@ export interface Ratings {
   votes: number
 }
 
+export interface Screenings {
+  id: Generated<number>
+  movieId: number
+  numbersOfTickets: number
+  numbersOfTicketsLeft: number
+  timestamp: string
+}
+
 export interface Stars {
   movieId: number
   personId: number
+}
+
+export interface Tickets {
+  id: Generated<number>
+  screeningId: number
+  userId: number
 }
 
 export interface DB {
@@ -31,5 +52,7 @@ export interface DB {
   movies: Movies
   people: People
   ratings: Ratings
+  screenings: Screenings
   stars: Stars
+  tickets: Tickets
 }

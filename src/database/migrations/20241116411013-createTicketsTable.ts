@@ -3,14 +3,12 @@ import { Kysely, SqliteDatabase } from 'kysely'
 /** Migration used to initialize empty database tables for the test database. */
 export async function up(db: Kysely<SqliteDatabase>) {
   await db.schema
-    .createTable('screenings')
+    .createTable('tickets')
     .ifNotExists()
     .addColumn('id', 'integer', (c) => c.primaryKey().autoIncrement().notNull())
-    .addColumn('numbers_of_tickets', 'integer', (c) => c.notNull())
-    .addColumn('numbers_of_tickets_left', 'integer', (c) => c.notNull())
-    .addColumn('timestamp', 'timestamp', (c) => c.notNull())
-    .addColumn('movie_id', 'integer', (c) =>
-      c.notNull().references('movies.id')
+    .addColumn('user_id', 'integer', (c) => c.notNull())
+    .addColumn('screening_id', 'integer', (c) =>
+      c.notNull().references('screenings.id')
     )
     .execute()
 }
