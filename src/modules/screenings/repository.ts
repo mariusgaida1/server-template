@@ -2,17 +2,32 @@ import type { Database } from '@/database'
 
 export default (db: Database) => ({
   findAll: async (limit = 10, offset = 0) =>
-    db.selectFrom('screening').selectAll().limit(limit).offset(offset).execute(),
+    db
+      .selectFrom('screenings')
+      .innerJoin('movies', 'movies.id', 'screenings.movieId')
+      .select([
+        'screenings.id',
+        'screenings.numbersOfTickets',
+        'screenings.numbersOfTicketsLeft',
+        'screenings.timestamp',
+        'movies.title',
+        'movies.year',
+      ])
+      .limit(limit)
+      .offset(offset)
+      .execute(),
 
   findByIds: async (ids: number[]) =>
-    db.selectFrom('screening').selectAll().where('id', 'in', ids).execute(),
+    db.selectFrom('screenings').selectAll().where('id', 'in', ids).execute(),
 
-  addScreening: async (data) =>
-    db.insertInto('screening').values({
-      timestamp: data.timestap,
-      movieId: data.movieID,
-      numberOfTickets: data.numberOfTickets,
-      numberOfTicketLeft: data.numberOfTicketLeft
-    })
-    .executeTakeFirst(),
+  addScreening: async (data: { timestamp: any; movieId: any; tickets: any }) =>
+    db
+      .insertInto('screenings')
+      .values({
+        timestamp: data.timestamp,
+        movieId: data.movieId,
+        numbersOfTickets: data.tickets,
+        numbersOfTicketsLeft: data.tickets,
+      })
+      .executeTakeFirst(),
 })

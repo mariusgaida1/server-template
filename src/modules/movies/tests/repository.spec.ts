@@ -8,7 +8,6 @@ const createMovies = createFor(db, 'movies')
 
 describe('findAll', () => {
   it('should return existing movies', async () => {
-    // directly create movies in the database
     await createMovies([
       {
         id: 1,
@@ -29,7 +28,6 @@ describe('findAll', () => {
   })
 
   it('should return a list of movies by their ID', async () => {
-    // directly create movies in the database
     await createMovies([
       {
         id: 22,
@@ -48,10 +46,8 @@ describe('findAll', () => {
       },
     ])
 
-    // select a few of them
     const movies = await repository.findByIds([234, 4153])
 
-    // expect to have only the selected movies
     expect(movies).toHaveLength(2)
     expect(movies).toEqual([
       {
